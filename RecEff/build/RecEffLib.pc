@@ -1,0 +1,12 @@
+prefix=/work/clas12/marianak/builds/RecEff
+exec_prefix=/work/clas12/marianak/builds/RecEff
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: RecEff
+Description: Codes for track Reconstruction Efficiencies
+Version: 0.0.1
+
+Requires:
+Libs: -L${libdir} -luRWellLib
+Cflags: -I${includedir}

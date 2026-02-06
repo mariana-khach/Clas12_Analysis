@@ -1,0 +1,13 @@
+/work/clas12/marianak/builds/RecEff/lib/libRecEffLib.so.0.0.1
+/work/clas12/marianak/builds/RecEff/lib/libRecEffLib.so.1
+/work/clas12/marianak/builds/RecEff/lib/libRecEffLib.so
+/work/clas12/marianak/builds/RecEff/share/pkgconfig/RecEffLib.pc
+/work/clas12/marianak/builds/RecEff/lib/libHipo4.a
+/work/clas12/marianak/builds/RecEff/bin/Reducer.exe
+/work/clas12/marianak/builds/RecEff/bin/Reducer_TBTracks2.exe
+/work/clas12/marianak/builds/RecEff/bin/Analysis.exe
+/work/clas12/marianak/builds/RecEff/bin/Analysis_beforereducing.exe
+/work/clas12/marianak/builds/RecEff/bin/Eff_plots.exe
+/work/clas12/marianak/builds/RecEff/bin/Eff_plot_lum.exe
+/work/clas12/marianak/builds/RecEff/bin/Eff_plot_lum_aiTracking.exe
+/work/clas12/marianak/builds/RecEff/bin/Compare_Rec_Red.py

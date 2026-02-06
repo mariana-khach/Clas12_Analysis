@@ -10,6 +10,7 @@
 
 #include <TFile.h>
 #include <TH1D.h>
+#include <TH2D.h>
 #include <TLorentzVector.h>
 
 using namespace std;
@@ -37,18 +38,34 @@ int main(int argc, char **argv) {
     const int el_pid=11;
     const double M_p=0.938; //GeV/c^2
     const double E_beam=10.6;  //GeV
+    const int pipl_pid=211;
+    const int pimi_pid=-211;
+    const double m_pi=0.139570 ; //in Gev/c^2 units
     TLorentzVector p4_target(0.,0.,0.,M_p);
     TLorentzVector p4_beam(0.,0.,E_beam,E_beam);
+    std::vector<TLorentzVector> el_p4_arr;
+    std::vector<TLorentzVector> pipl_p4_arr;
+    std::vector<TLorentzVector> pimi_p4_arr;
 
-    sprintf(inputFile, "/w/hallb-scshelf2102/clas12/marianak/rec_eff_init/Conv_Rec_jobs/recon_reduced_clas_%d_%d_rand150.hipo", run, file);
 
-    TFile file_out("Analysis_output/Analysis_out_Conv.root", "RECREATE");
+    sprintf(inputFile, "/w/hallb-scshelf2102/clas12/marianak/rec_eff_init/Rec_withAI/recon_reduced_clas_%d_%d_rand150_AI_MaxHit3000.hipo", run, file);
+
+    TFile file_out("Analysis_output/Analysis_out_rand150_AI.root", "RECREATE");
 
 
     TH1D h_x_B("h_x_B","",100,0,1.2);
     TH1D h_nu("h_nu","",200,0,20);
     TH1D h_W("h_W","",100,0,6);
     TH1D h_Q2("h_Q2","",200,0,6);
+    TH1D hMM("hMM", "Missing Mass;M_{miss} (GeV);Counts", 200, 0.0, 3.0);
+    TH1D h_deltap_overp("h_deltap_overp","",600,-1,0.5);
+    TH2D h_deltap_overp_p("h_deltap_overp_p","",200,0,12,600,-1,0.5);
+    TH1D h_deltaphi("h_deltaphi","",1800,-360,360);
+    TH1D h_deltatheta("h_deltatheta","",400,-40,40);
+    TH1D h_Npimi("h_Npimi","",40,0,40);
+    TH1D h_Npipl("h_Npipl","",40,0,40);
+    TH1D h_Nel("h_Nel","",40,0,40);
+
     //Histograms for TimeBasedTrkg::TBTracks
     TH1D h_chi2_NDF1_TBTracks("h_chi2_NDF1_TBTracks", "", 200, 0., 100);
     TH1D h_z_vert_TBTracks("h_z_vert_TBTracks", "", 200, -20, 20);
@@ -255,8 +272,14 @@ int main(int argc, char **argv) {
                     phi=(phi < 0) ? phi + 2*M_PI : phi;
                     phi=phi* 180.0 / M_PI;
 
-                    if (IsSameTrack(p_tot,theta,phi,p_tot_2,theta_2,phi_2)) {
 
+                    h_deltap_overp.Fill((p_tot-p_tot_2)/p_tot_2);
+                    h_deltap_overp_p.Fill(p_tot_2,(p_tot-p_tot_2)/p_tot_2);
+                    h_deltaphi.Fill(phi-phi_2);
+                    h_deltatheta.Fill(theta-theta_2);
+
+
+                    if (IsSameTrack(p_tot,theta,phi,p_tot_2,theta_2,phi_2)) {
 
                         h_p_match_TBTracks.Fill(p_tot);
                         h_phi_match_TBTracks.Fill(phi_2);
@@ -301,10 +324,11 @@ int main(int argc, char **argv) {
 
 
 
-
-                if (part_pid==el_pid  && part_status>2000 && part_status<4000) {
+                //e-
+                if (part_pid==el_pid  && part_status>=2000 && part_status<4000) {
 
                     TLorentzVector p4_e(part_px,part_py,part_pz,part_mom);
+                    el_p4_arr.push_back(p4_e);
 
                     double nu=(p4_beam-p4_e).E();
                     double Q2=-(p4_beam-p4_e).M2();
@@ -318,8 +342,44 @@ int main(int argc, char **argv) {
 
                 }
 
+                //pi+
+                if (part_pid==pipl_pid  && part_status>=2000 && part_status<4000) {
+                    TLorentzVector p4_pipl(part_px,part_py,part_pz,sqrt(part_mom*part_mom+m_pi*m_pi));
+                    pipl_p4_arr.push_back(p4_pipl);
+                }
 
+                //pi-
+                if (part_pid==pimi_pid  && part_status>=2000 && part_status<4000) {
+                    TLorentzVector p4_pimi(part_px,part_py,part_pz, sqrt(part_mom*part_mom+m_pi*m_pi));
+                    pimi_p4_arr.push_back(p4_pimi);
+                }
+
+            }// end of REC::Particle bank
+
+
+            h_Npimi.Fill(pimi_p4_arr.size());
+            h_Npipl.Fill(pipl_p4_arr.size());
+            h_Nel.Fill(el_p4_arr.size());
+/*
+            // Loop over all combinations: e x pi- x pi+
+            for (const auto& el   : el_p4_arr) {
+                for (const auto& pimi : pimi_p4_arr) {
+                    for (const auto& pipl : pipl_p4_arr) {
+
+                        TLorentzVector Pmiss = p4_beam+p4_target - el - pimi - pipl;
+
+                        double mm  = Pmiss.M();
+                        double mm2 = Pmiss.M2();
+
+                        hMM.Fill(mm);
+                    }
+                }
             }
+
+*/
+
+
+
 
 
 
@@ -384,7 +444,7 @@ int main(int argc, char **argv) {
 
 
 
-
+cout<<"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<endl;
 
     //gDirectory->Write();
     file_out.cd();
@@ -403,9 +463,10 @@ int main(int argc, char **argv) {
 bool IsSameTrack(double p1,double theta1,double phi1,double p2,double theta2,double phi2) {
 
     double p_range=0.1;  //GeV/c
-    double phi_range=1.5; //Deg.
+    double phi_range=5; //Deg.
     double theta_range=2.5;  //Deg.
+    double deltap_overp_range=0.02;
 
-    return abs(p1-p2)<p_range && abs(theta1-theta2)<theta_range && abs(phi1-phi2)<phi_range;
+    return abs(p1-p2)/p2<deltap_overp_range && abs(theta1-theta2)<theta_range && abs(phi1-phi2)<phi_range;
 
 }

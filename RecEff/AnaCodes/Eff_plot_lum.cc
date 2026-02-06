@@ -71,8 +71,8 @@ int main() {
     gStyle->SetOptStat(0);
 
     // Hist names
-    const char* h_num_name = "h_p_match_TBTracks_neg";
-    const char* h_den_name = "h_p_TBTracks2_neg";
+    const char* h_num_name = "h_p_match_TBTracks_pos";
+    const char* h_den_name = "h_p_TBTracks2_pos";
 
     // X values you requested
     std::vector<double> xvals = {0.0, 45.0, 100.0, 150.0};
@@ -82,16 +82,15 @@ int main() {
     //   [1] AI rec.
     //   [2] Conv. rec.
     //
-    // Replace these placeholders with your actual filenames.
     std::vector<std::vector<std::string>> files_at_x = {
         // x = 0
         {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_denoised.root",  "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_AI.root",  "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_Conv.root"},
         // x = 45
-        {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_denoised.root", "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_AI.root", "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_Conv.root"},
+        {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand45_denoised.root", "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand45_AI.root", "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand45_Conv.root"},
         // x = 100
-        {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_denoised.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_AI.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_Conv.root"},
+        {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand100_denoised.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand100_AI.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand100_Conv.root"},
         // x = 150
-        {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_denoised.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_AI.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_Conv.root"}
+        {"/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand150_denoised.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand150_AI.root","/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand150_Conv.root"}
     };
 
     // Labels/styles (3 reconstruction types)
@@ -145,7 +144,7 @@ int main() {
     if (xpad <= 0) xpad = 1.0;
 
     TH1F* frame = c->DrawFrame(xmin - xpad, 0.0, xmax + xpad, ymax);
-    frame->SetTitle("Entries ratio vs X;X;Entries(h_{p match TBTracks neg}) / Entries(h_{p TBTracks2 neg})");
+    frame->SetTitle(";Lum.;Eff.");
 
     // Create and draw graphs
     TLegend* leg = new TLegend(0.60, 0.70, 0.88, 0.88);
@@ -173,7 +172,7 @@ int main() {
 
     leg->Draw();
 
-    c->SaveAs("TBTracks_neg_entryRatio_vsX.pdf");
+    c->SaveAs("Plots/TBTracks_neg_entryRatio_vsX.pdf");
     delete c;
 
     return 0;

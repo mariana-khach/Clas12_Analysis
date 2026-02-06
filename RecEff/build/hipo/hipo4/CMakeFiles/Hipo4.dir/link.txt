@@ -1,0 +1,2 @@
+/usr/bin/ar qc libHipo4.a CMakeFiles/Hipo4.dir/bank.cpp.o CMakeFiles/Hipo4.dir/dictionary.cpp.o CMakeFiles/Hipo4.dir/reader.cpp.o CMakeFiles/Hipo4.dir/record.cpp.o CMakeFiles/Hipo4.dir/recordbuilder.cpp.o CMakeFiles/Hipo4.dir/utils.cpp.o CMakeFiles/Hipo4.dir/wrapper.cpp.o CMakeFiles/Hipo4.dir/writer.cpp.o CMakeFiles/Hipo4.dir/event.cpp.o
+/usr/bin/ranlib libHipo4.a

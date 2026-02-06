@@ -1,0 +1,9 @@
+
+STEP 1: NOTE this step is needed when you want to build the project for the 1st time
+or want changt the installation directory
+ifarm2401.jlab.org> cmake -S . -Bbuild -DCMAKE_INSTALL_PREFIX=/w/hallb-scshelf2102/clas12/marianak/builds/RecEff
+
+STEP 2: Anytime you change the code, in order your changes to be applied you need to run following two commands
+ifarm2401.jlab.org> cmake --build build
+ifarm2401.jlab.org> cmake --install build
+

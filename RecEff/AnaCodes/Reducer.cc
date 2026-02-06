@@ -30,6 +30,8 @@ int main(int argc, char **argv) {
 
     int run = atoi(argv[1]);
     int file = atoi(argv[2]);
+    const int el_pid=11;
+    int N_el=0;
 
     char inputFile[256];
     char outputFile[256];
@@ -66,8 +68,8 @@ int main(int argc, char **argv) {
     //use this bank to look at vertex distributions for reconstructed tracks
     hipo::bank bTTrkgTbHits(factory.getSchema("TimeBasedTrkg::TBHits"));
     // use this bank to look at the hits corresponding to reconstructed tracks, id corresponds to index of the hit in DC::tdc, we use this to reduce DC::tot hits based on vertex cuts
-    hipo::bank bRecPart(factory.getSchema("REC::Particle"));
     hipo::bank bDCTot(factory.getSchema("DC::tdc"));
+    hipo::bank bRECParticle(factory.getSchema("REC::Particle"));
     //bank names except "DC::tdc" to write in output hipo
     std::vector<std::string> v_DecodeBankNames = {"BMT::adc","BST::adc","CND::adc","CND::tdc","CTOF::adc","CTOF::tdc",
                                                 "DC::jitter","ECAL::adc", "ECAL::tdc","FTCAL::adc","FTHODO::adc",
@@ -132,6 +134,24 @@ int main(int argc, char **argv) {
             event.getStructure(bTBTrkgTBTracks);
             event.getStructure(bTTrkgTbHits);
             event.getStructure(bDCTot);
+            event.getStructure(bRECParticle);
+
+
+
+            int nPart = bRECParticle.getRows(); // Number of rows of the bank
+
+            for (auto itrk = 0; itrk < nPart; itrk++) {
+
+                int part_pid = bRECParticle.getInt("pid", itrk);
+                int part_status = abs(bRECParticle.getInt("status", itrk));
+
+                //check if there is an e- in the event so that the start time is calculated correctly
+                if (part_pid==el_pid  && part_status>=2000 && part_status<4000) {
+                    N_el=N_el+1;
+                }
+            }
+
+
 
             int nTrk = bTBTrkgTBTracks.getRows(); // Number of rows of the bank
 
@@ -178,7 +198,7 @@ int main(int argc, char **argv) {
             }
 
 
-            if (nGoodTrk > 0) {
+            if (nGoodTrk > 0 && N_el>0) {
                 hipo::event outEvent;
                 hipo::bank bDCTotReduced(sch_dcTOT, nGoodTrkHits); //creates a new HIPO bank with a fixed number of rows to store a reduced copy of the DC::tot bank.
                 hipo::bank bTTrkgTBTracks2(schTB2, nGoodTrk );

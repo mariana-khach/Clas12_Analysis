@@ -17,9 +17,9 @@ int main() {
 
     // --- ROOT files to compare (same histogram name exists in each) ---
     std::vector<std::string> filenames = {
-        "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_denoised.root",
-        "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_AI.root",
-        "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_Conv.root"
+        "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand150_denoised.root",
+        "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand150_AI.root",
+        "/w/hallb-scshelf2102/clas12/marianak/builds/RecEff/bin/Analysis_output/Analysis_out_rand150_Conv.root"
     };
 
 
@@ -97,7 +97,7 @@ int main() {
                 hc->GetXaxis()->SetTitle("#theta [Deg.]");
             }
             else if (hname.find("_p_") != std::string::npos ||
-                     hname.find("vs_p") != std::string::npos) {
+                     hname.find("vs_p_") != std::string::npos) {
                 hc->GetXaxis()->SetTitle("p [GeV/c]");
                      }
             else if (hname.find("phi") != std::string::npos) {

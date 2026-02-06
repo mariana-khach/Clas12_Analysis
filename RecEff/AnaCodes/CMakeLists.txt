@@ -30,10 +30,14 @@ target_link_libraries(Eff_plots Hipo4 ${ROOT_LIBRARIES} )    #Link libraries to 
 add_executable(Eff_plot_lum Eff_plot_lum.cc)   #create target executable based on Analysis.cc
 set_target_properties(Eff_plot_lum PROPERTIES OUTPUT_NAME "Eff_plot_lum.exe")   # assign name to executable
 target_link_libraries(Eff_plot_lum Hipo4 ${ROOT_LIBRARIES} )    #Link libraries to executable
+
+add_executable(Eff_plot_lum_aiTracking Eff_plot_lum_aiTracking.cc)   #create target executable based on Analysis.cc
+set_target_properties(Eff_plot_lum_aiTracking PROPERTIES OUTPUT_NAME "Eff_plot_lum_aiTracking.exe")   # assign name to executable
+target_link_libraries(Eff_plot_lum_aiTracking Hipo4 ${ROOT_LIBRARIES} )    #Link libraries to executable
 #################################################################################################
 
 ################################ Installing Executable targets #############################
-install( TARGETS Reducer Reducer_TBTracks2 Analysis Analysis_beforereducing Eff_plots Eff_plot_lum
+install( TARGETS Reducer Reducer_TBTracks2 Analysis Analysis_beforereducing Eff_plots Eff_plot_lum Eff_plot_lum_aiTracking
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin )
 
 ################################ Installing needed directores ##############################

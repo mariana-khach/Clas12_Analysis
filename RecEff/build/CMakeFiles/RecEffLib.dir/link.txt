@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -std=c++17 -shared -Wl,-soname,libRecEffLib.so.1 -o libRecEffLib.so.0.0.1 CMakeFiles/RecEffLib.dir/src/RecEffTools.cc.o  -Wl,-rpath,::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
